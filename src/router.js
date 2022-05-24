@@ -74,19 +74,20 @@ const router = new VueRouter({
 
         {
             path: '/customerService',
+            meta: { title: 'Customer Service Page' },
             component: importComponent('CustomerService'),
             children: [
                 {
                     path: '/user',
                     name: 'Customer',
-                    meta: { title: 'CustomerPage' },
+                    meta: { title: 'Customer Page' },
                     component: importComponent('DataMaster/CustomerPage'),
                 },
                 {
-                    path: '/peminjaman',
-                    name: 'Peminjaman',
-                    meta: { title: 'Peminjaman' },
-                    component: importComponent('DataMaster/PeminjamanPage'),
+                    path: '/peminjamanCs',
+                    name: 'Peminjaman Cs',
+                    meta: { title: 'Peminjaman Cs' },
+                    component: importComponent('DataMaster/PeminjamanCS'),
                 },
             ],
         },
@@ -108,6 +109,12 @@ const router = new VueRouter({
                     name: 'Profil',
                     meta: { title: 'Profil' },
                     component: importComponent('DataMaster/ProfilePage'),
+                },
+                {
+                    path: '/peminjaman',
+                    name: 'Peminjaman',
+                    meta: { title: 'Peminjaman' },
+                    component: importComponent('DataMaster/PeminjamanPage'),
                 },
             ],
         },

@@ -1,8 +1,8 @@
 <template>
   <div class="dashboard">
-    <v-navigation-drawer v-model="drawer" class="fullheight" width="256" app color="blue darken-1">
+    <v-navigation-drawer v-model="drawer" class="fullheight" width="256" app color="green darken-2">
         <v-list-item>
-            <v-list-item-content class="blue darken-1">
+            <v-list-item-content class="orange darken-2">
                 <v-list-item-title class="title" > Atma Jaya Rental </v-list-item-title>
                 <v-list-item-subtitle> Rent Easily </v-list-item-subtitle>
             </v-list-item-content>
@@ -25,7 +25,7 @@
             </v-list-item>
         </v-list>
     </v-navigation-drawer>
-    <v-app-bar app fixed height="68px" color="blue darken-1">
+    <v-app-bar app fixed height="68px" color="green darken-2">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <VSpacer />
       <v-toolbar-items>
@@ -61,7 +61,7 @@ export default {
       items: [
         { title: "Dashboard", icon: 'mdi-view-dashboard',to: 'dashboard' },
         { title: 'Customer', icon: 'mdi-view-dashboard',  to: 'user' },
-        { title: 'Manage Peminjaman', icon: 'mdi-view-dashboard',  to: 'peminjaman' },
+        { title: 'Manage Peminjaman', icon: 'mdi-view-dashboard',  to: 'peminjamanCs' },
       ],
     };
   },

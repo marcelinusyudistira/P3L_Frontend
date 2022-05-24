@@ -63,7 +63,6 @@ export default {
         { title: 'Home', icon: 'mdi-view-dashboard',  to: 'homeDb' },
         { title: 'Profile', icon: 'mdi-view-dashboard',  to: 'profil' },
         { title: 'Melakukan Peminjaman', icon: 'mdi-view-dashboard',  to: 'peminjaman' },
-        { title: 'Promo', icon: 'mdi-view-dashboard',  to: 'peminjaman' },
       ],
     };
   },
