@@ -313,7 +313,7 @@
                     <v-card-action>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-1" text @click="cancel">Cancel</v-btn>
-                        <v-btn color="blue darken-1" text @click="pembayaran">OK</v-btn>
+                        <v-btn color="blue darken-1" text @click="pembayaran2">OK</v-btn>
                     </v-card-action>
                 </v-card-text>
             </v-card>
@@ -459,6 +459,7 @@ export default {
                 { text: "Actions", value: 'actions'},
             ],
             transaksi: new FormData,
+            // transaksiPembayaran: new FormData,
             transaksis: [],
             form: {
                 id_transaksi: null,
@@ -647,6 +648,40 @@ export default {
                 this.resetForm();
             }).catch(error => {
                 console.log(newData.bukti_pembayaran);
+                this.error_message = error.response.data.message;
+                this.color = "red";
+                this.snackbar = true;
+                this.load = false;
+            });
+        },
+
+        pembayaran2(){
+            // this.dateTimeKembali = this.dateKembali + ' ' + this.time3;
+            let transaksi2 = new FormData();
+
+            transaksi2.append('metode_pembayaran',this.selectBayar)
+            transaksi2.append('bukti_pembayaran',this.buktiBayar)
+
+            var url = this.$api + '/uploadBuktiBayar/' + this.editId +'?_method=PUT';
+
+            this.load = true;
+            this.$http.post(url,transaksi2, {
+                headers: {
+                    'Authorization' : 'Bearer ' + localStorage.getItem('token'),
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(response => {
+                this.error_message = response.data.message;
+                this.color = "green";
+                this.error_message = "Berhasil Melakukan Pembayaran"
+                this.snackbar = true;
+                this.load = false;
+                this.dialogBayar = false;
+                this.close();
+                this.readData(); // baca data
+                this.resetForm();
+            }).catch(error => {
                 this.error_message = error.response.data.message;
                 this.color = "red";
                 this.snackbar = true;
