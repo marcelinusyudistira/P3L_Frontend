@@ -10,6 +10,8 @@
   "dependencies": {
     "axios": "^0.26.1",
     "core-js": "^3.8.3",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.23",
     "vue": "^2.6.14",
     "vue-router": "^3.5.3",
     "vuetify": "^2.6.4"

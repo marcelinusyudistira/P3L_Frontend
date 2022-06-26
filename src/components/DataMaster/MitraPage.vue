@@ -2,7 +2,7 @@
     <v-main class="list">
         <h3 class="text-h3" font-weight-medium mb-5> Mitra </h3>
 
-        <v-card>
+        <v-card dark class="mt-5">
             <v-card-title>
                 <v-text-field
                     v-model="search"
@@ -17,7 +17,7 @@
                 <v-btn color="success" dark @click="dialog = true"> Tambah </v-btn>
 
             </v-card-title>
-            <v-data-table :headers="headers" :items="mitras" :search="search">
+            <v-data-table dark :headers="headers" :items="mitras" :search="search">
                 <template v-slot:[`item.actions`]="{ item }">
                     <v-btn small class="mr-2" @click="editHandler(item)">edit</v-btn>
                     <v-btn small @click="deleteHandler(item.id_mitra)">delete</v-btn>
@@ -31,10 +31,12 @@
                 </v-card-title>
                 <v-card-text>
                     <v-container>
-                        <v-text-field v-model="form.nama_mitra" label="Nama Mitra" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.no_ktp" label="Nomor KTP" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.alamat" label="Alamat" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.nomor_telepon" label="Nomor Telepon" required dense outlined></v-text-field>
+                        <v-form v-model="valid" ref="form">
+                        <v-text-field v-model="form.nama_mitra" label="Nama Mitra" :rules="namaRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.no_ktp" label="Nomor KTP" :rules="noKTPRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.alamat" label="Alamat" :rules="alamatRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.nomor_telepon" label="Nomor Telepon" :rules="no_telpRules" required dense outlined></v-text-field>
+                        </v-form>
                     </v-container>
                     <v-card-action>
                         <v-spacer></v-spacer>
@@ -95,7 +97,19 @@ export default {
                 nomor_telepon: null,
             },
             deleteId: '',
-            editId: ''
+            editId: '',
+            namaRules: [
+                (v) => !!v || 'Nama Mitra tidak boleh kosong',
+            ],
+            noKTPRules: [
+                (v) => !!v || 'Nomor KTP tidak boleh kosong',
+            ],
+            alamatRules: [
+                (v) => !!v || 'Alamat tidak boleh kosong ',
+            ],
+            no_telpRules: [
+                (v) => !!v || 'Nomor Telepon tidak boleh kosong ',
+            ],
         };
     },
     methods: {
@@ -119,6 +133,7 @@ export default {
         },
         //Simpan data Mitra
         save() {
+            if(this.$refs.form.validate()) {
             this.mitra.append('nama_mitra', this.form.nama_mitra);
             this.mitra.append('no_ktp', this.form.no_ktp);
             this.mitra.append('alamat', this.form.alamat);
@@ -144,9 +159,11 @@ export default {
                 this.snackbar = true;
                 this.load = false;
             });
+            }
         },
         //Ubah data Mitra
         update() {
+            if(this.$refs.form.validate()) {
             let newData = {
                 nama_mitra : this.form.nama_mitra,
                 no_ktp : this.form.no_ktp,
@@ -175,7 +192,7 @@ export default {
                 this.snackbar = true;
                 this.load = false;
             });
-        },
+        }},
         //Hapus data Mitra
         deleteData() {
             //menghapus data
@@ -226,6 +243,7 @@ export default {
             this.dialogEdit = false;
             this.dialogConfirm = false;
             this.inputType = 'Tambah';
+            this.$refs.form.reset()
         },
         resetForm() {
             this.form = {

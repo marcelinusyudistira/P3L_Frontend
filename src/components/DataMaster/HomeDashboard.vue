@@ -17,7 +17,7 @@
                     v-for="(item,i) in items"
                     :key="i"
                     :src="item.src"
-                0 ></v-carousel-item>
+                 ></v-carousel-item>
             </v-carousel>
             <v-card
                 class="mx-auto mt-4"
@@ -29,9 +29,13 @@
 
                 <v-card-subtitle class="subtitle" align="justify">
                     <p class="mt-1 subtitle">
-                        Morbi mattis ullamcorper velit. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Fusce convallis metus id felis luctus adipiscing. Aenean massa. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus.
-                        Nulla consequat massa quis enim. Praesent venenatis metus at tortor pulvinar varius. Donec venenatis vulputate lorem. Phasellus accumsan cursus velit. Pellentesque ut neque.
-                        Nulla consequat massa quis enim. Praesent venenatis metus at tortor pulvinar varius. Donec venenatis vulputate lorem. Phasellus accumsan cursus velit. Pellentesque ut neque.
+                        Atma Jaya Rental merupakan sebuah rental mobil terpercaya yang mengedepankan kualitas pelayanan,
+                        kemudahan syarat penyewaan, harga murah, serta keramahan. Terdapat berbagai jenis mobil yang dapat disewa melalui servis
+                        rental mobil ini, tentunya dengan harga yang lebih terjangkau. Disediakan Driver-driver handal untuk menemani perjalanan Anda
+                        dalam menggunakan armada kami. Kondisi yang bersih, mesin yang sehat, dan ketersediaan safety riding pada armada kami membuat
+                        kenyamanan anda dalam berkendara semakin baik. Atma Jaya Rental merupakan satu-satunya rental mobil yang menjamin kulaitas serta
+                        kuantitas dari pelayanan-pelayanan yang diberikan. Atma Jaya Rental "Rent Easily".
+                        
                     </p>
                 </v-card-subtitle>
             </v-card>
@@ -56,7 +60,7 @@
                         </v-card-title>
 
                         <v-card-subtitle align="justify">
-                            Morbi mattis ullamcorper velit. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Fusce convallis metus id felis luctus adipiscing. Aenean massa. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus.
+                           {{card.isi}}
                         </v-card-subtitle>
                     </v-card>
                     </v-col>
@@ -123,23 +127,40 @@
         return {
             items: [
                 {
-                    src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+                    src: 'https://www.gardaoto.com/wp-content/uploads/2022/02/Ingin-Buka-Usaha-Rental-Mobil-Ini-Syarat-Kelengkapannya.jpg',
                 },
                 {
-                    src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+                    src: 'https://asset.kompas.com/crops/OHf2diiOQzCFzaFZoTdWbOJmNNg=/0x0:1000x667/750x500/data/photo/2018/06/14/283583017.jpg',
                 },
                 {
-                    src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-                },
-                {
-                    src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+                    src: 'https://imgx.gridoto.com/crop/0x0:0x0/700x465/filters:watermark(file/2017/gridoto/img/watermark.png,5,5,60)/photo/gridoto/2018/06/11/281223284.jpg',
                 },
             ],
             cards: [
-                { title: 'Pre-fab homes', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 3 },
-                { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 3 },
-                { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 3 },
-                { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 3 },
+                { 
+                    title: 'Pelayanan Ramah', 
+                    src: 'https://awsimages.detik.net.id/content/2010/09/11/766/jabat-tangan-depan-thinkstock.jpg', 
+                    isi: 'Atma Jaya Rental mengedepankan prinsip dimana customer harus dapat pelayanan yang baik, sehingga para pegawai AJR diharuskan memiliki skill komunikasi yang baik agar customer menjadi lebih nyaman',
+                    flex: 3 
+                },
+                { 
+                    title: 'Perjalanan Nyaman', 
+                    src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', 
+                    isi: 'Dengan tersedianya driver handal dan ramah, customer dapat melakukan perjalanan dengan nyaman dan rileks sehingga dapat sampai tujuan dengan keadaan yang selamat, aman, sejahtera, dan bahagia',
+                    flex: 3 
+                },
+                { 
+                    title: 'Harga Terjangkau', 
+                    src: 'https://rollingstone.co.id/wp-content/uploads/2020/04/Harganya-Lebih-Murah.png', 
+                    isi: 'Atma Jaya Rental merupakan rental mobil dengan harga yang pas dikantong customer dengan pelayanan yang baik, armada yang lengkap, serta driver yang handal menjadi nilai plus dari rental mobil ini',
+                    flex: 3 
+                },
+                { 
+                    title: 'Armada Berkualitas', 
+                    src: 'http://lotus-trans.com/wp-content/uploads/2018/04/Rental-Mobil-Purbalingga.jpg', 
+                    isi: 'Mengedepankan kualitas dan kuantitas, dengan semboyannya "Rent Easily", armada yang disediakan oleh AJR sangat beragam, dan dijamin safetynya karena rutin melakukan servis dan pemeriksaan mesin disetiap bulan',
+                    flex: 3 
+                },
             ],
             icons: [
                 'mdi-facebook',

@@ -1,6 +1,6 @@
 <template>
     <v-main class="list">
-        <h3 class="text-h3" font-weight-medium mb-5> Transaksi </h3>
+        <h3 class="text-h3" font-weight-medium mb-5> Transaksi</h3>
 
         <v-card>
             <v-card-title>
@@ -199,93 +199,16 @@
                             :items="promo"
                             dense outlined
                         />
+
                     </v-container>
                     <v-card-action>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-1" text @click="cancel">Cancel</v-btn>
-                        <v-btn color="blue darken-1" text @click="save">OK</v-btn>
+                        <v-btn color="blue darken-1" text @click="cekPromo">OK</v-btn>
                     </v-card-action>
                 </v-card-text>
             </v-card>
         </v-dialog>
-
-        <!-- <v-dialog v-model="dialogKembali" persistent max-width="600px">
-            <v-card>
-                <v-card-title>
-                    <v-span class="headline">Masukkan Tanggal Pengembalian</v-span>
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12" sm="6">
-                            <v-menu
-                                ref="menu5"
-                                v-model="menu5"
-                                :close-on-content-click="false"
-                                :return-value.sync="dateKembali"
-                                transition="scale-transition"
-                                offset-y
-                                min-width="auto"
-                            >
-                                <template v-slot:activator="{ on, attrs }" >
-                                    <v-text-field
-                                        v-model="dateKembali"
-                                        label="Tanggal Kembali"
-                                        prepend-icon="mdi-calendar"
-                                        readonly
-                                        v-bind="attrs"
-                                        v-on="on"
-                                    ></v-text-field>
-                                </template>
-                                <v-date-picker v-model="dateKembali" no-title scrollable>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text color="primary" @click="menu5 = false">Cancel</v-btn>
-                                    <v-btn text color="primary" @click="$refs.menu5.save(dateKembali)">OK</v-btn>
-                                </v-date-picker>
-                            </v-menu>
-                            </v-col>
-                            <v-spacer></v-spacer>
-                            <v-col cols="12" sm="6">
-                            <v-menu
-                                ref="menu6"
-                                v-model="menu6"
-                                :close-on-content-click="false"
-                                :nudge-right="40"
-                                :return-value.sync="time3"
-                                transition="scale-transition"
-                                offset-y
-                                max-width="290px"
-                                min-width="290px"
-                            >
-                                <template v-slot:activator="{ on, attrs }">
-                                <v-text-field
-                                    v-model="time3"
-                                    label="Waktu Kembali"
-                                    prepend-icon="mdi-clock-time-four-outline"
-                                    readonly
-                                    v-bind="attrs"
-                                    v-on="on"
-                                ></v-text-field>
-                                </template>
-                                <v-time-picker
-                                    v-model="time3"
-                                    full-width
-                                    format="24hr"
-                                    use-seconds
-                                    @click:minute="$refs.menu6.save(time3)"
-                                ></v-time-picker>
-                            </v-menu>
-                            </v-col>
-                        </v-row>                       
-                    </v-container>
-                    <v-card-action>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="cancel">Cancel</v-btn>
-                        <v-btn color="blue darken-1" text @click="pembayaran">OK</v-btn>
-                    </v-card-action>
-                </v-card-text>
-            </v-card>
-        </v-dialog> -->
 
         <v-dialog v-model="dialogBayar" persistent max-width="600px">
         <v-card>
@@ -317,8 +240,6 @@
                     </v-card-action>
                 </v-card-text>
             </v-card>
-            
-
         </v-dialog>
 
         <v-dialog v-model="dialogInfo" persistent max-width="800px" transition="dialog-bottom-transition">
@@ -398,8 +319,7 @@
                     <v-row v-if="cekBayar()">
                         <v-col align="start" class="ms-6" cols="12" sm="3">Total Harga</v-col>
                         <v-col align="start" cols="12" sm="5">: Rp. {{form.total_biaya}},00</v-col>
-                    </v-row>
-                    
+                    </v-row>                    
                 </v-container>
     
                 <v-card-text> </v-card-text>
@@ -425,6 +345,7 @@ export default {
             inputType: 'Tambah',
             load: false,
             snackbar: false,
+            cekPromoCst: null,
             error_message: '',
             selectPromo: '',
             selectMobil: '',
@@ -537,7 +458,6 @@ export default {
                 this.transaksis = response.data.data;
             })
         },
-        //Re
         readPromo(){
             var url = this.$api + '/showPromo';
             this.$http.get(url, {
@@ -550,7 +470,7 @@ export default {
         },
         //Read Data Promo
         readData() {
-            var url = this.$api + '/showTransaksi/';
+            var url = this.$api + '/showByEmail/' + this.emailUser;
             this.$http.get(url, {
                 headers: {
                     'Authorization' : 'Bearer ' + localStorage.getItem('token')
@@ -559,8 +479,40 @@ export default {
                 this.transaksis = response.data.data;
             })
         },
-        //Simpan data Promo
+        cekPromo(){
+            this.dateTimeMulai = this.dateMulai + ' ' + this.time1;
+            this.dateTimeSelesai = this.dateSelesai + ' ' + this.time2;
+
+            if(this.selectPromo == '')
+                this.selectPromo = 0;
+
+            var url = this.$api + '/cekPromo/' + this.dateMulai + '/' + this.dateSelesai + '/' + this.emailUser + '/' + this.selectPromo
+            this.$http.get(url, {
+                headers: {
+                    'Authorization' : 'Bearer ' + localStorage.getItem('token'),
+                    'Accept': 'application/json',
+                }
+            }).then(response => {
+                this.cekPromoCst = response.data.data;
+                this.error_message = 'Anda memenuhi ketentuan Promo';
+                this.color = 'green';
+                this.snackbar = true;
+                this.save();
+            }).catch(error => {
+                this.error_message = error.response.data.message;
+                this.error_message = 'Anda tidak memenuhi ketentuan Promo';
+                this.color = "red";
+                this.snackbar = true;
+                this.load = false;
+            });
+
+        },
+        //Simpan data
         save() {
+            if(this.selectPromo == 0){
+                this.selectPromo = '';
+            }
+
             this.dateTimeMulai = this.dateMulai + ' ' + this.time1;
             this.dateTimeSelesai = this.dateSelesai + ' ' + this.time2;
             this.transaksi.append('tanggal_mulai', this.dateTimeMulai);

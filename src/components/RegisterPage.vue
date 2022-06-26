@@ -12,7 +12,7 @@
                         <v-card-text class="pt-4">
                             <div>
                                 <v-form v-model="valid" ref="form">
-                                    <v-text-field label="Nama Customer" v-model="name" :rules="nameRules" required></v-text-field>
+                                    <v-text-field label="Nama Customer" v-model="name" :rules="nameRules" dense outlined required></v-text-field>
                                     <v-menu
                                         ref="menu"
                                         v-model="menu"
@@ -39,9 +39,16 @@
                                             <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
                                         </v-date-picker>
                                     </v-menu>
-                                    <v-text-field v-model="gender" label="Gender" required dense outlined></v-text-field>
-                                    <v-text-field v-model="alamat" label="Alamat" required dense outlined></v-text-field>
-                                    <v-text-field v-model="nomor_telepon" label="Nomor Telepon" required dense outlined></v-text-field>
+                                    <v-select
+                                        v-model="genderSelected"
+                                        label="Gender"
+                                        :items="jenisKelamin"
+                                        dense outlined
+                                        :rules="genderRules"
+                                    />
+                                    <v-text-field v-model="alamat" label="Alamat" :rules="alamatRules" required dense outlined></v-text-field>
+                                    <v-text-field v-model="nomor_telepon" label="Nomor Telepon" :rules="no_telpRules" required dense outlined></v-text-field>
+                                    <v-text-field v-model="email" label="Email" :rules="emailRules" required dense outlined></v-text-field>
                                     <template>
                                         <v-file-input
                                             v-model="photo"
@@ -49,6 +56,7 @@
                                             @change="upload"
                                             outlined
                                             dense
+                                            :rules="fotoRules"
                                         ></v-file-input>
                                     </template>
                                     <template>
@@ -58,6 +66,7 @@
                                             @change="uploadKtp"
                                             outlined
                                             dense
+                                            :rules="ktpRules"
                                         ></v-file-input>
                                     </template>
                                     <template>
@@ -67,9 +76,9 @@
                                             @change="uploadSim"
                                             outlined
                                             dense
+                                            :rules="simRules"
                                         ></v-file-input>
                                     </template>
-                                    <v-text-field v-model="email" label="Email" required dense outlined></v-text-field>
                                     <v-layout justify-end>
                                         <v-btn class="mr-2" @click="submit" :class=" { 'grey darken-1 white--text' : valid, disabled: !valid }">Register</v-btn>
                                         <v-btn @click="clear" class="grey darken-3 white--text">Clear</v-btn>
@@ -121,17 +130,33 @@
                 photo: '',
                 ktp: '',
                 sim: '',
-                password: '',
-                passwordRules: [
-                    (v) => !!v || 'Password tidak boleh kosong :(',
-                ],
+                genderSelected: '',
+                jenisKelamin: ['Laki-laki','Perempuan'],
                 email: '',
                 emailRules: [
-                    (v) => !!v || 'Email tidak boleh kosong :(',
+                    (v) => !!v || 'Email tidak boleh kosong',
                 ],
                 name: '',
                 nameRules: [
-                    (v) => !!v || 'Nama tidak boleh kosong :(',
+                    (v) => !!v || 'Nama tidak boleh kosong',
+                ],
+                genderRules: [
+                (v) => !!v || 'Gender tidak boleh kosong ',
+                ],
+                alamatRules: [
+                    (v) => !!v || 'Alamat tidak boleh kosong ',
+                ],
+                no_telpRules: [
+                    (v) => !!v || 'Nomor Telepon tidak boleh kosong ',
+                ],
+                fotoRules: [
+                    (v) => !!v || 'Data Foto tidak boleh kosong ',
+                ],
+                ktpRules: [
+                    (v) => !!v || 'Data KTP tidak boleh kosong ',
+                ],
+                simRules: [
+                    (v) => !!v || 'Data SIM tidak boleh kosong ',
                 ],
             };
         },
@@ -157,7 +182,7 @@
                     if(this.cekUsia >= 17){
                         this.user.append('nama_customer', this.name);
                         this.user.append('tanggal_lahir', this.date);
-                        this.user.append('gender', this.gender);
+                        this.user.append('gender', this.genderSelected);
                         this.user.append('alamat', this.alamat);
                         this.user.append('nomor_telepon', this.nomor_telepon);
                         this.user.append('foto', this.photo);

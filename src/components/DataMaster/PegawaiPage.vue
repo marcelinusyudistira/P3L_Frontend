@@ -2,7 +2,7 @@
     <v-main class="list">
         <h3 class="text-h3" font-weight-medium mb-5> Pegawai</h3>
 
-        <v-card>
+        <v-card dark class="mt-5">
             <v-card-title>
                 <v-text-field
                     v-model="search"
@@ -17,7 +17,7 @@
                 <v-btn color="success" dark @click="dialog = true"> Tambah </v-btn>
 
             </v-card-title>
-            <v-data-table :headers="headers" :items="pegawais" :search="search">
+            <v-data-table dark :headers="headers" :items="pegawais" :search="search">
                 <template v-slot:[`item.id_role`]="{ item }">
                     <div v-if="item.id_role === 1">Manager</div>
                     <div v-else-if="item.id_role === 2">Administrasi</div>
@@ -36,7 +36,8 @@
                 </v-card-title>
                 <v-card-text>
                     <v-container>
-                        <v-text-field v-model="form.nama_pegawai" label="Nama Pegawai" required dense outlined></v-text-field>
+                        <v-form v-model="valid" ref="form">
+                        <v-text-field v-model="form.nama_pegawai" label="Nama Pegawai" :rules="namaRules" required dense outlined></v-text-field>
                         <v-select
                             item-text="name"
                             item-value="id"
@@ -44,6 +45,7 @@
                             label="Jabatan"
                             :items="role"
                             dense outlined
+                            :rules="jabatanRules"
                         />
                         <v-menu
                             ref="menu"
@@ -86,10 +88,18 @@
                             </v-btn>
                             </v-date-picker>
                         </v-menu>
-                        <v-text-field v-model="form.gender" label="Gender" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.alamat" label="Alamat" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.nomor_telepon" label="Nomor Telepon" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.email" label="Email" required dense outlined></v-text-field>
+                        <v-select
+                            v-model="genderSelected"
+                            label="Gender"
+                            :items="jenisKelamin"
+                            dense outlined
+                            :rules="genderRules"
+                        />
+                        <!-- <v-text-field v-model="form.gender" label="Gender" required dense outlined></v-text-field> -->
+                        <v-text-field v-model="form.alamat" label="Alamat" :rules="alamatRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.nomor_telepon" label="Nomor Telepon" :rules="no_telpRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.email" label="Email" :rules="emailRules" required dense outlined></v-text-field>
+                        </v-form>
                     </v-container>
                     <v-card-action>
                         <v-spacer></v-spacer>
@@ -107,7 +117,8 @@
                 </v-card-title>
                 <v-card-text>
                     <v-container>
-                        <v-text-field v-model="form.nama_pegawai" label="Nama Pegawai" required dense outlined></v-text-field>
+                        <v-form v-model="valid" ref="form">
+                        <v-text-field v-model="form.nama_pegawai" label="Nama Pegawai" :rules="namaRules" required dense outlined></v-text-field>
                         <v-select
                             item-text="name"
                             item-value="id"
@@ -115,9 +126,11 @@
                             label="Jabatan"
                             :items="role"
                             dense outlined
+                            :rules="jabatanRules"
                         />
-                        <v-text-field v-model="form.alamat" label="Alamat" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.nomor_telepon" label="Nomor Telepon" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.alamat" label="Alamat" :rules="alamatRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.nomor_telepon" label="Nomor Telepon" :rules="no_telpRules" required dense outlined></v-text-field>
+                        </v-form>
                     </v-container>
                     <v-card-action>
                         <v-spacer></v-spacer>
@@ -165,6 +178,7 @@ export default {
             color: '',
             search: null,
             defaultSelected: '',
+            genderSelected: '',
             dialog: false,
             dialogConfirm: false,
             dialogEdit: false,
@@ -193,6 +207,7 @@ export default {
                     id: "3"
                 }
                 ],
+            jenisKelamin: ['Laki-laki','Perempuan'],
             pegawai: new FormData,
             pegawais: [],
             form: {
@@ -202,7 +217,25 @@ export default {
                 nomor_telepon: null,
             },
             deleteId: '',
-            editId: ''
+            editId: '',
+            namaRules: [
+                (v) => !!v || 'Nama Pegawai tidak boleh kosong',
+            ],
+            jabatanRules: [
+                (v) => !!v || 'Jabatan tidak boleh kosong',
+            ],
+            genderRules: [
+                (v) => !!v || 'Gender tidak boleh kosong ',
+            ],
+            alamatRules: [
+                (v) => !!v || 'Alamat tidak boleh kosong ',
+            ],
+            no_telpRules: [
+                (v) => !!v || 'Nomor Telepon tidak boleh kosong ',
+            ],
+            emailRules: [
+                (v) => !!v || 'Email tidak boleh kosong ',
+            ],
         };
     },
     methods: {
@@ -226,6 +259,7 @@ export default {
         },
         //Simpan data Pegawai
         save() {
+            if(this.$refs.form.validate()) {
             this.date1 = new Date(this.date).getFullYear();
             this.date2 = new Date(this.dateNow).getFullYear();
                 
@@ -236,7 +270,7 @@ export default {
                     this.pegawai.append('nama_pegawai', this.form.nama_pegawai);
                     this.pegawai.append('id_role', this.defaultSelected);
                     this.pegawai.append('tanggal_lahir', this.date);
-                    this.pegawai.append('gender', this.form.gender);
+                    this.pegawai.append('gender', this.genderSelected);
                     this.pegawai.append('alamat', this.form.alamat);
                     this.pegawai.append('nomor_telepon', this.form.nomor_telepon);
                     this.pegawai.append('email', this.form.email);
@@ -266,9 +300,11 @@ export default {
                     this.color = "red";
                     this.snackbar = true;
                 }
+            }
         },
         //Ubah data Pegawai
         update() {
+            if(this.$refs.form.validate()) {
             let newData = {
                 nama_pegawai : this.form.nama_pegawai,
                 id_role : this.defaultSelected,
@@ -297,7 +333,7 @@ export default {
                 this.snackbar = true;
                 this.load = false;
             });
-        },
+        }},
         //Hapus data Pegawai
         deleteData() {
             //menghapus data
@@ -348,6 +384,7 @@ export default {
             this.dialogEdit = false;
             this.dialogConfirm = false;
             this.inputType = 'Tambah';
+            this.$refs.form.reset()
         },
         resetForm() {
             this.form = {
@@ -358,6 +395,7 @@ export default {
                 alamat: null,
                 nomor_telepon: null,
                 email: null,
+                genderSelected: '',
             };
         },
     },

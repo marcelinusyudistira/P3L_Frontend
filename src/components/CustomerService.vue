@@ -36,18 +36,18 @@
         <router-view></router-view>
     </div>
     <v-dialog v-model="dialogConfirm" persistent max-width="400px">
-            <v-card>
-                <v-card-title>
-                    <span class="headline">Warning</span>
-                </v-card-title>
-                <v-card-text>Anda Yakin ingin Logout?</v-card-text>
-                <v-card-action>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="dialogConfirm = false">Cancel</v-btn>
-                    <v-btn color="blue darken-1" text @click="logout">YES</v-btn>
-                </v-card-action>
-            </v-card>
-        </v-dialog>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Warning</span>
+        </v-card-title>
+        <v-card-text>Anda Yakin ingin Logout?</v-card-text>
+        <v-card-action>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialogConfirm = false">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="logout">YES</v-btn>
+        </v-card-action>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -59,9 +59,9 @@ export default {
       drawer: true,
       dialogConfirm: false,
       items: [
-        { title: "Dashboard", icon: 'mdi-view-dashboard',to: 'dashboard' },
-        { title: 'Customer', icon: 'mdi-view-dashboard',  to: 'user' },
-        { title: 'Manage Peminjaman', icon: 'mdi-view-dashboard',  to: 'peminjamanCs' },
+        { title: "Dashboard", icon: 'mdi-view-dashboard',to: 'csdb' },
+        { title: 'Customer', icon: 'mdi-account-box',  to: 'user' },
+        { title: 'Verifikasi Peminjaman', icon: 'mdi-check-decagram',  to: 'peminjamanCs' },
       ],
     };
   },

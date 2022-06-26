@@ -1,8 +1,8 @@
 <template>
   <div class="dashboard">
-    <v-navigation-drawer v-model="drawer" class="fullheight" width="256" app color="blue darken-1">
+    <v-navigation-drawer v-model="drawer" class="fullheight" width="256" app color="green darken-2">
         <v-list-item>
-            <v-list-item-content class="blue darken-1">
+            <v-list-item-content class="orange darken-2">
                 <v-list-item-title class="title" > Atma Jaya Rental </v-list-item-title>
                 <v-list-item-subtitle> Rent Easily </v-list-item-subtitle>
             </v-list-item-content>
@@ -25,7 +25,7 @@
             </v-list-item>
         </v-list>
     </v-navigation-drawer>
-    <v-app-bar app fixed height="68px" color="blue darken-1">
+    <v-app-bar app fixed height="68px" color="green darken-2">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <VSpacer />
       <v-toolbar-items>
@@ -36,18 +36,18 @@
         <router-view></router-view>
     </div>
     <v-dialog v-model="dialogConfirm" persistent max-width="400px">
-            <v-card>
-                <v-card-title>
-                    <span class="headline">Warning</span>
-                </v-card-title>
-                <v-card-text>Anda Yakin ingin Logout?</v-card-text>
-                <v-card-action>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="dialogConfirm = false">Cancel</v-btn>
-                    <v-btn color="blue darken-1" text @click="logout">YES</v-btn>
-                </v-card-action>
-            </v-card>
-        </v-dialog>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Warning</span>
+        </v-card-title>
+        <v-card-text>Anda Yakin ingin Logout?</v-card-text>
+        <v-card-action>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialogConfirm = false">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="logout">YES</v-btn>
+        </v-card-action>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -59,10 +59,10 @@ export default {
       drawer: true,
       dialogConfirm: false,
       items: [
-        { title: "Dashboard", icon: 'mdi-view-dashboard',to: 'dashboard' },
-        { title: 'Manage Promo', icon: 'mdi-view-dashboard',  to: 'promo' },
-        { title: 'Manage Jadwal Admin', icon: 'mdi-view-dashboard',  to: 'jadwal' },
-        { title: 'Manage Jadwal Customer Service', icon: 'mdi-view-dashboard',  to: 'jadwalCs' },
+        { title: "Dashboard", icon: 'mdi-view-dashboard',to: 'managerdb' },
+        { title: 'Manage Promo', icon: 'mdi-sale',  to: 'promo' },
+        { title: 'Manage Jadwal Admin', icon: 'mdi-calendar-range',  to: 'jadwal' },
+        { title: 'Manage Jadwal Customer Service', icon: 'mdi-calendar-range',  to: 'jadwalCs' },
       ],
     };
   },

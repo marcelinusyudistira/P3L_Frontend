@@ -2,7 +2,7 @@
     <v-main class="list">
         <h3 class="text-h3" font-weight-medium mb-5> Promo </h3>
 
-        <v-card>
+        <v-card dark class="mt-5">
             <v-card-title>
                 <v-text-field
                     v-model="search"
@@ -17,7 +17,7 @@
                 <v-btn color="success" dark @click="dialog = true"> Tambah </v-btn>
 
             </v-card-title>
-            <v-data-table :headers="headers" :items="promos" :search="search">
+            <v-data-table class="headerTable" dark :headers="headers" :items="promos" :search="search">
                 <template v-slot:[`item.status_promo`]="{ item }">
                     <div v-if="item.status_promo === 1">Aktif</div>
                     <div v-else>Tidak Aktif</div>
@@ -35,10 +35,11 @@
                 </v-card-title>
                 <v-card-text>
                     <v-container>
-                        <v-text-field v-model="form.kode_promo" label="Kode Promo" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.jenis_promo" label="Jenis Promo" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.keterangan" label="Keterangan" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.potongan_harga" label="Potongan Harga" required dense outlined></v-text-field>
+                        <v-form v-model="valid" ref="form">
+                        <v-text-field v-model="form.kode_promo" :rules="kodeRules" label="Kode Promo" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.jenis_promo" :rules="jenisRules" label="Jenis Promo" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.keterangan" :rules="keteranganRules" label="Keterangan" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.potongan_harga" :rules="potonganRules" label="Potongan Harga" required dense outlined></v-text-field>
                         <v-select
                             item-text="name"
                             item-value="id"
@@ -46,12 +47,14 @@
                             label="Status Promo"
                             :items="statusPromo"
                             dense outlined
+                            :rules="statusRules"
                         />
+                        </v-form>
                     </v-container>
                     <v-card-action>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-1" text @click="cancel">Cancel</v-btn>
-                        <v-btn color="blue darken-1" text @click="setForm">Save</v-btn>
+                        <v-btn color="blue darken-1" text @click="setForm" >Save</v-btn>
                     </v-card-action>
                 </v-card-text>
             </v-card>
@@ -120,6 +123,21 @@ export default {
                     id: "0"
                 }
             ],
+            kodeRules: [
+                (v) => !!v || 'Kode Promo tidak boleh kosong',
+            ],
+            jenisRules: [
+                (v) => !!v || 'Jenis Promo tidak boleh kosong',
+            ],
+            keteranganRules: [
+                (v) => !!v || 'Keterangan tidak boleh kosong',
+            ],
+            potonganRules: [
+                (v) => !!v || 'Potongan Harga tidak boleh kosong',
+            ],
+            statusRules: [
+                (v) => !!v || 'Status Promo tidak boleh kosong',
+            ],
         };
     },
     methods: {
@@ -143,6 +161,7 @@ export default {
         },
         //Simpan data Promo
         save() {
+            if(this.$refs.form.validate()) {
             this.promo.append('kode_promo', this.form.kode_promo);
             this.promo.append('jenis_promo', this.form.jenis_promo);
             this.promo.append('keterangan', this.form.keterangan);
@@ -169,9 +188,10 @@ export default {
                 this.snackbar = true;
                 this.load = false;
             });
-        },
+        }},
         //Ubah data Promo
         update() {
+            if(this.$refs.form.validate()) {
             let newData = {
                 kode_promo : this.form.kode_promo,
                 jenis_promo : this.form.jenis_promo,
@@ -201,7 +221,7 @@ export default {
                 this.snackbar = true;
                 this.load = false;
             });
-        },
+        }},
         //Hapus data Promo
         deleteData() {
             //menghapus data
@@ -253,6 +273,7 @@ export default {
             this.dialogEdit = false;
             this.dialogConfirm = false;
             this.inputType = 'Tambah';
+            this.$refs.form.reset()
         },
         resetForm() {
             this.form = {
@@ -275,3 +296,9 @@ export default {
     },
 };
 </script>
+
+<style>
+.headerTable {
+    white-space: nowrap;
+}
+</style>

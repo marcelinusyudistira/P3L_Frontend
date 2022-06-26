@@ -17,14 +17,14 @@
             size="164"
             style="position:absolute; top: 20px; left: 50px;"
           >
-            <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
+            <v-img v-bind:src="('https://api.atmajayarental-0378.xyz/public/images/') + item.foto"></v-img>
           </v-avatar>
           <v-card-title class="ml-5">{{item.nama_customer}}</v-card-title>
         </v-img>
-        <v-card-title class="ml-5">ID Customer : {{item.id_customer}}</v-card-title>
+        <v-card-title class="ml-5">ID Customer   : {{item.id_customer}}</v-card-title>
         <v-card-title class="ml-5">Tanggal Lahir : {{item.tanggal_lahir}}</v-card-title>
-        <v-card-title class="ml-5">Gender : {{item.gender}}</v-card-title>
-        <v-card-title class="ml-5">Alamat : {{item.alamat}}</v-card-title>
+        <v-card-title class="ml-5">Gender        : {{item.gender}}</v-card-title>
+        <v-card-title class="ml-5">Alamat        : {{item.alamat}}</v-card-title>
         <v-card-title class="ml-5">Nomor Telepon : {{item.nomor_telepon}}</v-card-title>
         <v-card-actions>
           <v-btn
@@ -46,7 +46,8 @@
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-text-field v-model="form.nama_customer" label="Nama Customer" required dense outlined></v-text-field>
+            <v-form v-model="valid" ref="form">
+            <v-text-field v-model="form.nama_customer" label="Nama Customer" :rules="namaRules" required dense outlined></v-text-field>
             <v-select
               item-text="name"
               item-value="name"
@@ -54,9 +55,10 @@
               label="Gender"
               :items="jenisKelamin"
               dense outlined
+              :rules="genderRules"
             />
-            <v-text-field v-model="form.alamat" label="Alamat" required dense outlined></v-text-field>
-            <v-text-field v-model="form.nomor_telepon" label="Nomor Telepon" required dense outlined></v-text-field>
+            <v-text-field v-model="form.alamat" label="Alamat" :rules="alamatRules" required dense outlined></v-text-field>
+            <v-text-field v-model="form.nomor_telepon" label="Nomor Telepon" :rules="no_telpRules" required dense outlined></v-text-field>
             <template>
               <v-file-input
                 v-model="photo"
@@ -64,6 +66,7 @@
                 @change="upload"
                 outlined
                 dense
+                :rules="fotoRules"
               ></v-file-input>
             </template>
             <template>
@@ -73,8 +76,10 @@
                 @change="uploadSim"
                 outlined
                 dense
+                :rules="simRules"
               ></v-file-input>
-            </template>                          
+            </template>  
+            </v-form>                        
           </v-container>
           <v-card-action>
             <v-spacer></v-spacer>
@@ -119,6 +124,24 @@ export default {
       sim:null,
       editId:'',
       timer:'',
+      namaRules: [
+        (v) => !!v || 'Nama tidak boleh kosong',
+      ],
+      genderRules: [
+        (v) => !!v || 'Jenis Kelamin tidak boleh kosong',
+      ],
+      alamatRules: [
+        (v) => !!v || 'Alamat tidak boleh kosong',
+      ],
+      no_telpRules: [
+        (v) => !!v || 'Nomor Telepon tidak boleh kosong',
+      ],
+      fotoRules: [
+        (v) => !!v || 'Data Foto tidak boleh kosong',
+      ],
+      simRules: [
+        (v) => !!v || 'Data SIM tidak boleh kosong',
+      ]
     };
   },
   methods: {
@@ -141,6 +164,7 @@ export default {
       })
     },
     update() {
+      if(this.$refs.form.validate()) {
       let newData = {
         nama_customer : this.form.nama_customer,
         gender : this.selectGender,
@@ -158,6 +182,7 @@ export default {
       }).then(response => {
         this.timer = setInterval(this.readData, 5000);
         this.error_message = response.data.message;
+        this.error_message = "Berhasil Edit Profile";
         this.color = "green";
         this.snackbar = true;
         this.load = false;
@@ -171,7 +196,7 @@ export default {
         this.snackbar = true;
         this.load = false;
       });
-    },
+    }},
     editHandler(item) {
       this.editId = item.id_customer;
       this.form.nama_customer = item.nama_customer;
@@ -194,6 +219,7 @@ export default {
     cancel() {
       this.resetForm();
       this.dialogEdit = false;
+      this.$refs.form.reset();
     },
     resetForm() {
       this.form = {
@@ -204,8 +230,8 @@ export default {
       foto: null,
       sim: null,
       selectGender: '',
-            };
-        },
+      };
+    },
   },
   mounted() {
         this.readData();

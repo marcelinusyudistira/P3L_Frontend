@@ -61,8 +61,9 @@ export default {
       emailUser: localStorage.getItem('email'),
       items: [
         { title: 'Home', icon: 'mdi-view-dashboard',  to: 'homeDb' },
-        { title: 'Profile', icon: 'mdi-view-dashboard',  to: 'profil' },
-        { title: 'Melakukan Peminjaman', icon: 'mdi-view-dashboard',  to: 'peminjaman' },
+        { title: 'Profile', icon: 'mdi-account',  to: 'profil' },
+        { title: 'Melakukan Peminjaman', icon: 'mdi-car-key',  to: 'peminjaman' },
+        { title: 'Generate Nota', icon: 'mdi-note-outline',  to: 'nota' },
       ],
     };
   },

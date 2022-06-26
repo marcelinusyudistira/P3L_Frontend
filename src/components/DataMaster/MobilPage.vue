@@ -2,7 +2,7 @@
     <v-main class="list">
         <h3 class="text-h3" font-weight-medium mb-5> Mobil</h3>
 
-        <v-card>
+        <v-card dark class="mt-5">
             <v-card-title>
                 <v-text-field
                     v-model="search"
@@ -19,7 +19,7 @@
             </v-card-title>
             <v-data-table dark class="headerTable" :headers="headers" :items="mobils" :search="search">
                 <template v-slot:[`item.foto`]="{ item }">
-                    <img v-bind:src="('http://127.0.0.1:8000/images/') + item.foto" class="white--text align-end" height="80px" width="130px">
+                    <img v-bind:src="('https://api.atmajayarental-0378.xyz/public/images/') + item.foto" class="white--text align-end" height="80px" width="130px">
                 </template>
                 <template v-slot:[`item.kategori_aset`]="{ item }">
                     <div v-if="item.kategori_aset === 1">Mitra</div>
@@ -38,14 +38,15 @@
                 </v-card-title>
                 <v-card-text>
                     <v-container>
-                        <v-text-field v-model="form.nama_mobil" label="Nama Mobil" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.plat_nomor" label="Plat Nomor" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.tipe_mobil" label="Tipe Mobil" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.transmisi" label="Transmisi" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.jenis_bbm" label="Jenis BBM" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.volume_bbm" label="Volume BBM" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.warna_mobil" label="Warna Mobil" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.kapasitas" label="Kapasitas" required dense outlined></v-text-field>
+                        <v-form v-model="valid" ref="form">
+                        <v-text-field v-model="form.nama_mobil" label="Nama Mobil" :rules="namaRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.plat_nomor" label="Plat Nomor" :rules="platRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.tipe_mobil" label="Tipe Mobil" :rules="tipeRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.transmisi" label="Transmisi" :rules="transmisiRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.jenis_bbm" label="Jenis BBM" :rules="bbmRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.volume_bbm" label="Volume BBM" :rules="volumeRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.warna_mobil" label="Warna Mobil" :rules="warnaRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.kapasitas" label="Kapasitas" :rules="kapasitasRules" required dense outlined></v-text-field>
                         <template>
                             <v-file-input
                                 v-model="photo"
@@ -53,10 +54,11 @@
                                 @change="upload"
                                 outlined
                                 dense
+                                :rules="fotoRules"
                             ></v-file-input>
                         </template>
                         <v-spacer></v-spacer>
-                        <v-text-field v-model="form.fasilitas" label="Fasilitas" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.fasilitas" label="Fasilitas" :rules="fasilitasRules" required dense outlined></v-text-field>
                         <v-menu
                             ref="menu1"
                             v-model="menu1"
@@ -83,8 +85,9 @@
                                 <v-btn text color="primary" @click="$refs.menu1.save(dateServis)">OK</v-btn>
                             </v-date-picker>
                         </v-menu>
-                        <v-text-field v-model="form.harga_sewa" label="Harga Sewa" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.no_stnk" label="Nomor STNK" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.harga_sewa" label="Harga Sewa" :rules="hargaRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.no_stnk" label="Nomor STNK" :rules="stnkRules" required dense outlined></v-text-field>
+                        </v-form>
                     </v-container>
                     <v-card-action>
                         <v-spacer></v-spacer>
@@ -102,15 +105,16 @@
                 </v-card-title>
                 <v-card-text>
                     <v-container>
-                        <v-text-field v-model="form.id_mitra" label="ID Mitra" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.nama_mobil" label="Nama Mobil" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.plat_nomor" label="Plat Nomor" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.tipe_mobil" label="Tipe Mobil" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.transmisi" label="Transmisi" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.jenis_bbm" label="Jenis BBM" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.volume_bbm" label="Volume BBM" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.warna_mobil" label="Warna Mobil" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.kapasitas" label="Kapasitas" required dense outlined></v-text-field>
+                        <v-form v-model="valid" ref="form">
+                        <v-text-field v-model="form.id_mitra" label="ID Mitra" :rules="mitraRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.nama_mobil" label="Nama Mobil" :rules="namaRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.plat_nomor" label="Plat Nomor" :rules="platRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.tipe_mobil" label="Tipe Mobil" :rules="tipeRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.transmisi" label="Transmisi" :rules="transmisiRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.jenis_bbm" label="Jenis BBM" :rules="bbmRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.volume_bbm" label="Volume BBM" :rules="volumeRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.warna_mobil" label="Warna Mobil" :rules="warnaRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.kapasitas" label="Kapasitas" :rules="kapasitasRules" required dense outlined></v-text-field>
                         <template>
                             <v-file-input
                                 v-model="photo"
@@ -118,9 +122,10 @@
                                 @change="upload"
                                 outlined
                                 dense
+                                :rules="fotoRules"
                             ></v-file-input>
                         </template>
-                        <v-text-field v-model="form.fasilitas" label="Fasilitas" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.fasilitas" label="Fasilitas" :rules="fasilitasRules" required dense outlined></v-text-field>
                         <v-menu
                             ref="menu2"
                             v-model="menu2"
@@ -147,8 +152,8 @@
                                 <v-btn text color="primary" @click="$refs.menu2.save(dateServis)">OK</v-btn>
                             </v-date-picker>
                         </v-menu>
-                        <v-text-field v-model="form.harga_sewa" label="Harga Sewa" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.no_stnk" label="Nomor STNK" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.harga_sewa" label="Harga Sewa" :rules="hargaRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.no_stnk" label="Nomor STNK" :rules="stnkRules" required dense outlined></v-text-field>
                         <v-menu
                             ref="menu3"
                             v-model="menu3"
@@ -203,6 +208,7 @@
                                 <v-btn text color="primary" @click="$refs.menu4.save(dateKSelesai)">OK</v-btn>
                             </v-date-picker>
                         </v-menu>
+                        </v-form>
                     </v-container>
                     <v-card-action>
                         <v-spacer></v-spacer>
@@ -322,7 +328,46 @@ export default {
                 kontrak_selesai: null,
             },
             deleteId: '',
-            editId: ''
+            editId: '',
+            mitraRules: [
+                (v) => !!v || 'ID Mitra tidak boleh kosong',
+            ],
+            namaRules: [
+                (v) => !!v || 'Nama Mobil tidak boleh kosong',
+            ],
+            platRules: [
+                (v) => !!v || 'Nomor Plat tidak boleh kosong',
+            ],
+            tipeRules: [
+                (v) => !!v || 'Tipe Mobil tidak boleh kosong',
+            ],
+            transmisiRules: [
+                (v) => !!v || 'Jenis Transmisi tidak boleh kosong',
+            ],
+            bbmRules: [
+                (v) => !!v || 'Jenis BBM tidak boleh kosong',
+            ],
+            volumeRules: [
+                (v) => !!v || 'Volume BBM tidak boleh kosong',
+            ],
+            warnaRules: [
+                (v) => !!v || 'Warna Mobil tidak boleh kosong',
+            ],
+            kapasitasRules: [
+                (v) => !!v || 'Kapasitas tidak boleh kosong',
+            ],
+            fotoRules: [
+                (v) => !!v || 'Data Foto tidak boleh kosong',
+            ],
+            fasilitasRules: [
+                (v) => !!v || 'Fasilitas Mobil tidak boleh kosong',
+            ],
+            hargaRules: [
+                (v) => !!v || 'Harga Sewa tidak boleh kosong',
+            ],
+            stnkRules: [
+                (v) => !!v || 'Nomor STNK tidak boleh kosong',
+            ],
         };
     },
     methods: {
@@ -356,6 +401,7 @@ export default {
         },
         //Simpan data Mobil
         saveAset0() {
+            if(this.$refs.form.validate()) {
             this.mobil.append('nama_mobil', this.form.nama_mobil);
             this.mobil.append('plat_nomor', this.form.plat_nomor);
             this.mobil.append('tipe_mobil', this.form.tipe_mobil);
@@ -392,9 +438,10 @@ export default {
                 this.snackbar = true;
                 this.load = false;
             });
-        },
+        }},
 
         saveAset1(){
+            if(this.$refs.form.validate()) {
             this.mobil.append('id_mitra', this.form.id_mitra);
             this.mobil.append('nama_mobil', this.form.nama_mobil);
             this.mobil.append('plat_nomor', this.form.plat_nomor);
@@ -434,11 +481,11 @@ export default {
                 this.snackbar = true;
                 this.load = false;
             });
-        },
+        }},
         //Ubah data Mobil
         update() {
             if(this.form.kategori_aset == 0){
-
+                if(this.$refs.form.validate()) {
                 let newData = {
                     id_mitra : null,
                     nama_mobil : this.form.nama_mobil,
@@ -481,7 +528,8 @@ export default {
                     this.snackbar = true;
                     this.load = false;
                 });
-            }else{
+            }}else{
+                if(this.$refs.form.validate()) {
                 let newData = {
                     id_mitra : this.form.id_mitra,
                     nama_mobil : this.form.nama_mobil,
@@ -523,7 +571,7 @@ export default {
                     this.snackbar = true;
                     this.load = false;
                 });
-            }
+            }}
         },
         //Hapus data Mobil
         deleteData() {
@@ -601,6 +649,7 @@ export default {
             this.dialogMitra = false;
             this.dialogKontrak = false;
             this.inputType = 'Tambah';
+            this.$refs.form.reset()
             this.resetForm();
         },
         resetForm() {

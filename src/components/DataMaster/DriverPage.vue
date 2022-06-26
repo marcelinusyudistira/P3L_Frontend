@@ -2,7 +2,7 @@
     <v-main class="list">
         <h3 class="text-h3" font-weight-medium mb-5> Driver</h3>
 
-        <v-card>
+        <v-card dark class="mt-5">
             <v-card-title>
                 <v-text-field
                     v-model="search"
@@ -19,7 +19,7 @@
             </v-card-title>
             <v-data-table dark :headers="headers" :items="drivers" :search="search" class="headerTable">
                 <template v-slot:[`item.foto`]="{ item }">
-                    <img v-bind:src="('http://127.0.0.1:8000/images/') + item.foto" class="white--text align-end" height="80px" width="130px">
+                    <img v-bind:src="('https://api.atmajayarental-0378.xyz/public/images/') + item.foto" class="white--text align-end" height="80px" width="130px">
                 </template>
                 <template v-slot:[`item.status_driver`]="{ item }">
                     <div v-if="item.status_driver === 1">Available</div>
@@ -57,7 +57,8 @@
                 </v-card-title>
                 <v-card-text>
                     <v-container>
-                        <v-text-field v-model="form.nama_driver" label="Nama Driver" required dense outlined></v-text-field>
+                        <v-form v-model="valid" ref="form">
+                        <v-text-field v-model="form.nama_driver" label="Nama Driver" :rules="namaRules" required dense outlined></v-text-field>
                         <v-menu
                             ref="menu"
                             v-model="menu"
@@ -84,10 +85,16 @@
                                 <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
                             </v-date-picker>
                         </v-menu>
-                        <v-text-field v-model="form.gender" label="Gender" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.alamat" label="Alamat" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.nomor_telepon" label="Nomor Telepon" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.email" label="Email" required dense outlined></v-text-field>
+                        <v-select
+                            v-model="genderSelected"
+                            label="Gender"
+                            :items="jenisKelamin"
+                            dense outlined
+                            :rules="genderRules"
+                        />
+                        <v-text-field v-model="form.alamat" label="Alamat" :rules="alamatRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.nomor_telepon" label="Nomor Telepon" :rules="no_telpRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.email" label="Email" :rules="emailRules" required dense outlined></v-text-field>
                         <template>
                             <v-file-input
                                 v-model="photo"
@@ -95,9 +102,10 @@
                                 @change="upload"
                                 outlined
                                 dense
+                                :rules="fotoRules"
                             ></v-file-input>
                         </template>
-                        <v-text-field v-model="form.harga_driver" label="Harga" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.harga_driver" label="Harga" :rules="hargaRules" required dense outlined></v-text-field>
                         <v-select
                             item-text="name"
                             item-value="id"
@@ -105,6 +113,7 @@
                             label="Status Driver"
                             :items="statusDrv"
                             dense outlined
+                            :rules="statusRules"
                         />
                         <v-select
                             item-text="name"
@@ -113,8 +122,9 @@
                             label="Kemampuan Bahasa"
                             :items="bahasaDrv"
                             dense outlined
+                            :rules="bahasaRules"
                         />
-                        <v-text-field v-model="form.rerata_rating" label="Rerata Rating" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.rerata_rating" label="Rerata Rating" :rules="ratingRules" required dense outlined></v-text-field>
                         <template>
                             <v-file-input
                                 v-model="sim"
@@ -122,6 +132,7 @@
                                 @change="uploadSim"
                                 outlined
                                 dense
+                                :rules="simRules"
                             ></v-file-input>
                         </template>
                         <template>
@@ -131,6 +142,7 @@
                                 @change="uploadSbn"
                                 outlined
                                 dense
+                                :rules="sbnRules"
                             ></v-file-input>
                         </template>
                         <template>
@@ -140,6 +152,7 @@
                                 @change="uploadSkji"
                                 outlined
                                 dense
+                                :rules="skjiRules"
                             ></v-file-input>
                         </template>
                         <template>
@@ -149,6 +162,7 @@
                                 @change="uploadSkja"
                                 outlined
                                 dense
+                                :rules="skjaRules"
                             ></v-file-input>
                         </template>
                         <template>
@@ -158,8 +172,10 @@
                                 @change="uploadSkck"
                                 outlined
                                 dense
+                                :rules="skckRules"
                             ></v-file-input>
                         </template>
+                        </v-form>
                     </v-container>
                     <v-card-action>
                         <v-spacer></v-spacer>
@@ -176,12 +192,19 @@
                     <v-span class="headline">{{ formTitle }} Driver</v-span>
                 </v-card-title>
                 <v-card-text>
+                    <v-form v-model="valid" ref="form">
                     <v-container>
-                        <v-text-field v-model="form.nama_driver" label="Nama Driver" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.gender" label="Gender" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.alamat" label="Alamat" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.nomor_telepon" label="Nomor Telepon" required dense outlined></v-text-field>
-                        <v-text-field v-model="form.harga_driver" label="Harga" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.nama_driver" label="Nama Driver" :rules="namaRules" required dense outlined></v-text-field>
+                        <v-select
+                            v-model="genderSelected"
+                            label="Gender"
+                            :items="jenisKelamin"
+                            dense outlined
+                            :rules="genderRules"
+                        />
+                        <v-text-field v-model="form.alamat" label="Alamat" :rules="alamatRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.nomor_telepon" label="Nomor Telepon" :rules="no_telpRules" required dense outlined></v-text-field>
+                        <v-text-field v-model="form.harga_driver" label="Harga" :rules="hargaRules" required dense outlined></v-text-field>
                         <v-select
                             item-text="name"
                             item-value="id"
@@ -189,6 +212,7 @@
                             label="Status Driver"
                             :items="statusDrv"
                             dense outlined
+                            :rules="statusRules"
                         />
                         <v-select
                             item-text="name"
@@ -197,8 +221,10 @@
                             label="Kemampuan Bahasa"
                             :items="bahasaDrv"
                             dense outlined
+                            :rules="bahasaRules"
                         />
                     </v-container>
+                    </v-form>
                     <v-card-action>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-1" text @click="cancel">Cancel</v-btn>
@@ -253,6 +279,7 @@ export default {
             search: null,
             selectStatus: '',
             selectBahasa: '',
+            genderSelected: '',
             dialog: false,
             dialogConfirm: false,
             dialogEdit: false,
@@ -296,6 +323,7 @@ export default {
                     id: "0"
                 }
             ],
+            jenisKelamin: ['Laki-laki','Perempuan'],
             driver: new FormData,
             drivers: [],
             form: {
@@ -317,7 +345,52 @@ export default {
                 skck: null,
             },
             deleteId: '',
-            editId: ''
+            editId: '',
+            namaRules: [
+                (v) => !!v || 'Nama Driver tidak boleh kosong',
+            ],
+            genderRules: [
+                (v) => !!v || 'Gender tidak boleh kosong ',
+            ],
+            alamatRules: [
+                (v) => !!v || 'Alamat tidak boleh kosong ',
+            ],
+            no_telpRules: [
+                (v) => !!v || 'Nomor Telepon tidak boleh kosong ',
+            ],
+            emailRules: [
+                (v) => !!v || 'Email tidak boleh kosong ',
+            ],
+            fotoRules: [
+                (v) => !!v || 'Foto Driver tidak boleh kosong',
+            ],
+            hargaRules: [
+                (v) => !!v || 'Harga Sewa Driver tidak boleh kosong',
+            ],
+            statusRules: [
+                (v) => !!v || 'Status Driver tidak boleh kosong',
+            ],
+            ratingRules: [
+                (v) => !!v || 'Rerata Rating tidak boleh kosong',
+            ],
+            bahasaRules: [
+                (v) => !!v || 'Kemampuan Bahasa tidak boleh kosong',
+            ],
+            simRules: [
+                (v) => !!v || 'Data SIM tidak boleh kosong',
+            ],
+            sbnRules: [
+                (v) => !!v || 'Data Surat Bebas Narkoba tidak boleh kosong',
+            ],
+            skjiRules: [
+                (v) => !!v || 'Data Surat Kesehatan Jiwa tidak boleh kosong',
+            ],
+            skjaRules: [
+                (v) => !!v || 'Data Surat Kesehatan Jasmani tidak boleh kosong',
+            ],
+            skckRules: [
+                (v) => !!v || 'Data SKCK tidak boleh kosong',
+            ],
         };
     },
     methods: {
@@ -365,6 +438,7 @@ export default {
         },
         //Simpan data Drievr
         save() {
+            if(this.$refs.form.validate()) {
             this.date1 = new Date(this.date).getFullYear();
             this.date2 = new Date(this.dateNow).getFullYear();
                 
@@ -374,7 +448,7 @@ export default {
                 {
                     this.driver.append('nama_driver', this.form.nama_driver);
                     this.driver.append('tanggal_lahir', this.date);
-                    this.driver.append('gender', this.form.gender);
+                    this.driver.append('gender', this.genderSelected);
                     this.driver.append('alamat', this.form.alamat);
                     this.driver.append('nomor_telepon', this.form.nomor_telepon);
                     this.driver.append('foto', this.photo);
@@ -414,12 +488,14 @@ export default {
                     this.color = "red";
                     this.snackbar = true;
                 }
+            }
         },
         //Ubah data Driver
         update() {
+            if(this.$refs.form.validate()) {
             let newData = {
                 nama_driver : this.form.nama_driver,
-                gender : this.form.gender,
+                gender : this.genderSelected,
                 alamat : this.form.alamat,
                 nomor_telepon : this.form.nomor_telepon,
                 status_driver : this.selectStatus,
@@ -450,7 +526,7 @@ export default {
                 this.snackbar = true;
                 this.load = false;
             });
-        },
+        }},
         //Hapus data Driver
         deleteData() {
             //menghapus data
@@ -505,6 +581,7 @@ export default {
             this.dialogEdit = false;
             this.dialogConfirm = false;
             this.inputType = 'Tambah';
+            this.$refs.form.reset()
         },
         resetForm() {
             this.form = {
@@ -516,6 +593,7 @@ export default {
                 email: null,
                 selectStatus: '',
                 selectBahasa: '',
+                genderSelected: '',
             };
         },
     },

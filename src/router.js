@@ -12,36 +12,43 @@ const router = new VueRouter({
     routes: [
         {
             path: '/admin',
+            meta: { title: 'Admin Page' },
             component: importComponent('AdminPage'),
             children: [
                 {
+                    path: '/admindb',
+                    name: 'Dashboard',
+                    meta: { title: 'Dashboard Page' },
+                    component: importComponent('DashboardPage'),
+                },
+                {
                     path: '/pegawai',
                     name: 'Pegawai',
-                    meta: { title: 'Pegawai' },
+                    meta: { title: 'Daftar Pegawai AJR' },
                     component: importComponent('DataMaster/PegawaiPage'),
                 },
                 {
                     path: '/mobil',
                     name: 'Mobil',
-                    meta: { title: 'Mobil' },
+                    meta: { title: 'Daftar Mobil AJR' },
                     component: importComponent('DataMaster/MobilPage'),
                 },
                 {
                     path: '/driver',
                     name: 'Driver',
-                    meta: { title: 'Driver' },
+                    meta: { title: 'Daftar Driver AJR' },
                     component: importComponent('DataMaster/DriverPage'),
                 },
                 {
                     path: '/mitra',
                     name: 'Mitra',
-                    meta: { title: 'Mitra' },
+                    meta: { title: 'Daftar Mitra AJR' },
                     component: importComponent('DataMaster/MitraPage'),
                 },
                 {
                     path: '/dedline',
                     name: 'Dedline',
-                    meta: { title: 'Dedline' },
+                    meta: { title: 'Dedline Kontrak' },
                     component: importComponent('DataMaster/DedlineKontrak'),
                 },
             ],
@@ -49,24 +56,31 @@ const router = new VueRouter({
 
         {
             path: '/manager',
+            meta: { title: 'Manager Page' },
             component: importComponent('ManagerPage'),
             children: [
                 {
+                    path: '/managerdb',
+                    name: 'Dashboard',
+                    meta: { title: 'Dashboard Page' },
+                    component: importComponent('DashboardPage'),
+                },
+                {
                     path: '/jadwal',
                     name: 'JadwalPage',
-                    meta: { title: 'JadwalPage' },
+                    meta: { title: 'Jadwal Admin AJR' },
                     component: importComponent('DataMaster/JadwalPage'),
                 },
                 {
                     path: '/jadwalCs',
                     name: 'JadwalCsPage',
-                    meta: { title: 'JadwalCsPage' },
+                    meta: { title: 'Jadwal Customer Servis AJR' },
                     component: importComponent('DataMaster/JadwalPageCs'),
                 },
                 {
                     path: '/promo',
                     name: 'Promo',
-                    meta: { title: 'Promo' },
+                    meta: { title: 'Promo AJR' },
                     component: importComponent('DataMaster/PromoPage'),
                 },
             ],
@@ -78,6 +92,12 @@ const router = new VueRouter({
             component: importComponent('CustomerService'),
             children: [
                 {
+                    path: '/csdb',
+                    name: 'Dashboard',
+                    meta: { title: 'Dashboard Page' },
+                    component: importComponent('DashboardPage'),
+                },
+                {
                     path: '/user',
                     name: 'Customer',
                     meta: { title: 'Customer Page' },
@@ -86,7 +106,7 @@ const router = new VueRouter({
                 {
                     path: '/peminjamanCs',
                     name: 'Peminjaman Cs',
-                    meta: { title: 'Peminjaman Cs' },
+                    meta: { title: 'Peminjaman CS Page' },
                     component: importComponent('DataMaster/PeminjamanCS'),
                 },
             ],
@@ -101,13 +121,13 @@ const router = new VueRouter({
                 {
                     path: '/homedb',
                     name: 'HomeDb',
-                    meta: { title: 'HomeDb' },
+                    meta: { title: 'Atma Jaya Rental' },
                     component: importComponent('DataMaster/HomeDashboard'),
                 },
                 {
                     path: '/profil',
                     name: 'Profil',
-                    meta: { title: 'Profil' },
+                    meta: { title: 'Profile Customer' },
                     component: importComponent('DataMaster/ProfilePage'),
                 },
                 {
@@ -116,6 +136,12 @@ const router = new VueRouter({
                     meta: { title: 'Peminjaman' },
                     component: importComponent('DataMaster/PeminjamanPage'),
                 },
+                {
+                    path: '/nota',
+                    name: 'Nota',
+                    meta: { title: 'Generate Nota AJR' },
+                    component: importComponent('DataMaster/NotaPage'),
+                },
             ],
         },
 
@@ -123,14 +149,14 @@ const router = new VueRouter({
         {
             path: '/login',
             name: 'Login',
-            meta: { title: 'Login'},
+            meta: { title: 'Login AJR'},
             component: importComponent('LoginPage'),
         },
         // Register
         {
             path: '/register',
             name: 'Register',
-            meta: { title: 'Register'},
+            meta: { title: 'Register AJR'},
             component: importComponent('RegisterPage'),
         },
         {

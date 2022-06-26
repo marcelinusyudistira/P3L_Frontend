@@ -2,7 +2,7 @@
     <v-main class="list">
         <h3 class="text-h3" font-weight-medium mb-5> Daftar Dedline Kontrak </h3>
 
-        <v-card>
+        <v-card dark class="mt-5">
             <v-card-title>
                 <v-text-field
                     v-model="search"
@@ -17,7 +17,7 @@
             </v-card-title>
             <v-data-table dark :headers="headers" :items="mobils" :search="search" class="headerTable" >
                 <template v-slot:[`item.foto`]="{ item }">
-                    <img v-bind:src="('http://127.0.0.1:8000/images/') + item.foto" class="white--text align-end" height="80px" width="130px">
+                    <img v-bind:src="('https://api.atmajayarental-0378.xyz/public//images/') + item.foto" class="white--text align-end" height="80px" width="130px">
                 </template>
                 <template v-slot:[`item.kategori_aset`]="{ item }">
                     <div v-if="item.kategori_aset === 1">Mitra</div>

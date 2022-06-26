@@ -1,8 +1,8 @@
 <template>
   <div class="dashboard">
-    <v-navigation-drawer v-model="drawer" class="fullheight" width="256" app color="blue darken-1">
+    <v-navigation-drawer v-model="drawer" class="fullheight" width="256" app color="green darken-2">
         <v-list-item>
-            <v-list-item-content class="blue darken-1">
+            <v-list-item-content class="orange darken-2">
                 <v-list-item-title class="title" > Atma Jaya Rental </v-list-item-title>
                 <v-list-item-subtitle> Rent Easily </v-list-item-subtitle>
             </v-list-item-content>
@@ -48,6 +48,7 @@
                 </v-card-action>
             </v-card>
         </v-dialog>
+        <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom>{{ error_message }}</v-snackbar>
   </div>
 </template>
 
@@ -58,6 +59,9 @@ export default {
     return {
       drawer: true,
       dialogConfirm: false,
+      snackbar: false,
+      color: "",
+      error_message: "",
       items: [
         { title: "Dashboard", icon: 'mdi-view-dashboard',to: 'dashboard' },
         { title: 'Customer', icon: 'mdi-view-dashboard', to: 'user' },
@@ -75,6 +79,9 @@ export default {
       localStorage.setItem("token","");
       localStorage.setItem("role","");
       localStorage.setItem("email","");
+      this.error_message = "Berhasil  Logout";
+      this.color = "green";
+      this.snackbar = true;
       this.$router.push({
         name: 'Login',
       });

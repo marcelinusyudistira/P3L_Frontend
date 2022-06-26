@@ -13,7 +13,7 @@
                             <div>
                                 <v-form v-model="valid" ref="form">
                                     <v-text-field label="E-mail" v-model="email" :rules="emailRules" required></v-text-field>
-                                    <v-text-field label="Password" v-model="password" type="pasword" min="8" :rules="passwordRules" counter required></v-text-field>
+                                    <v-text-field label="Password" v-model="password" type="password" min="8" :rules="passwordRules" counter required></v-text-field>
                                     <v-layout justify-end>
                                         <v-btn class="mr-2" @click="submit" :class=" { 'grey darken-1 white--text' : valid, disabled: !valid }">Go</v-btn>
                                         <v-btn @click="clear" class="blue darken-3 white--text">Clear</v-btn>
@@ -80,6 +80,7 @@
                         localStorage.setItem('role', response.data.user.jabatan);
                         localStorage.setItem('token', response.data.access_token);
                         this.error_message = response.data.message;
+                        this.error_message = "Berhasil Login";
                         this.color = "green";
                         this.snackbar = true;
                         this.load = false;

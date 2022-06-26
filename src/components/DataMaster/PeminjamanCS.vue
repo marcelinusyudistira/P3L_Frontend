@@ -2,7 +2,7 @@
     <v-main class="list">
         <h3 class="text-h3" font-weight-medium mb-5> Transaksi </h3>
 
-        <v-card>
+        <v-card dark class="mt-5">
             <v-card-title>
                 <v-text-field
                     v-model="search"
@@ -15,7 +15,7 @@
                 <v-spacer></v-spacer>
 
             </v-card-title>
-            <v-data-table :headers="headers" :items="transaksis" :search="search">
+            <v-data-table dark :headers="headers" :items="transaksis" :search="search">
             <template v-slot:[`item.nama_driver`]="{ item }">
                     <div v-if="item.nama_driver === null">-</div>
                     <div v-else>{{item.nama_driver}}</div>
@@ -186,6 +186,12 @@
                         <v-col align="start" class="ms-6" cols="12" sm="3">Total Harga</v-col>
                         <v-col align="start" cols="12" sm="5">: Rp. {{form.total_biaya}},00</v-col>
                     </v-row>
+                    <v-row v-if="cekBukti()">
+                        <v-col align="start" class="ms-6" cols="12" sm="3">Bukti Pembayaran</v-col>
+                        <v-col align="start" cols="12" sm="5">
+                            <img v-bind:src="('https://api.atmajayarental-0378.xyz/public') + form.bukti_pembayaran" class="white--text align-end" height="300" width="220">
+                        </v-col>
+                    </v-row>
                     
                 </v-container>
                 <v-card-text> </v-card-text>
@@ -296,6 +302,7 @@ export default {
                 harga_driver: null,
                 total_biaya: null,
                 metode_pembayaran: null,
+                bukti_pembayaran: null,
             },
             deleteId: '',
             editId: '',
@@ -308,7 +315,7 @@ export default {
     methods: {
         //Read Data Promo
         readData() {
-            var url = this.$api + '/showTransaksi/';
+            var url = this.$api + '/showTransaksi';
             this.$http.get(url, {
                 headers: {
                     'Authorization' : 'Bearer ' + localStorage.getItem('token')
@@ -443,6 +450,7 @@ export default {
             this.form.diskon = item.diskon;
             this.form.total_biaya = item.total_biaya,
             this.form.metode_pembayaran = item.metode_pembayaran,
+            this.form.bukti_pembayaran = item.bukti_pembayaran,
             this.cekNoDriver();
             this.cekNoPromo();
             this.cekBayar();
@@ -463,6 +471,11 @@ export default {
             if(this.form.tanggal_kembali != null)
                 return true;
             else return false;
+        },
+        cekBukti(){
+           if(this.form.bukti_pembayaran != null)
+                return true;
+            else return false; 
         },
         verifPembayaran(){
             if(this.form.metode_pembayaran != null)

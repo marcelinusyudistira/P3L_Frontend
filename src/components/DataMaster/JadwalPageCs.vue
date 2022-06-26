@@ -158,6 +158,7 @@
                 </v-card-title>
                 <v-card-text>
                     <v-container>
+                        <v-form v-model="valid" ref="form">
                         <v-select
                             item-text="nama_pegawai"
                             item-value="id_pegawai"
@@ -165,6 +166,7 @@
                             label="Nama Pegawai"
                             :items="listPegawaiCs"
                             dense outlined
+                            :rules="namaRules"
                         />
                         <v-select
                             :item-text="listShift =>`${listShift.hari} - ${listShift.shift}`" 
@@ -173,8 +175,10 @@
                             label="Jadwal Shift"
                             :items="listShift"
                             dense outlined
+                            :rules="shiftRules"
                         >
                         </v-select>
+                        </v-form>
                     </v-container>
                     <v-card-action>
                         <v-spacer></v-spacer>
@@ -326,6 +330,12 @@
             hari: "Minggu", id: 12, shift: "2",
         },
       ],
+      namaRules: [
+        (v) => !!v || 'Nama Pegawai tidak boleh kosong',
+      ],
+      shiftRules: [
+        (v) => !!v || 'Shift tidak boleh kosong',
+      ],
     }),
     methods: {
         setForm(){
@@ -398,6 +408,7 @@
         },
         //Simpan data Detail
         save() {
+            if(this.$refs.form.validate()) {
             this.detail.append('id_pegawai', this.selectPegawai);
             this.detail.append('id_jadwal', this.selectShift);
 
@@ -423,12 +434,13 @@
                 this.cancel();
                 this.readAll();
             });
-        },
+        }},
         reloadPage() {
             window.location.reload();
         },
         //Ubah data Detail
         update() {
+            if(this.$refs.form.validate()) {
             let newData = {
                 id_pegawai : this.selectPegawai,
                 id_jadwal : this.selectShift,
@@ -455,7 +467,7 @@
                 this.cancel();
                 this.readAll();
             });
-        },
+        }},
         //Hapus data Detail
         deleteData() {
             var url = this.$api + '/detailJadwal/' + this.deleteId;
@@ -502,6 +514,7 @@
             this.dialogSearch = false;
             this.inputType = 'Tambah';
             this.search = null;
+            this.$refs.form.reset()
         },
         resetForm() {
             this.form = {

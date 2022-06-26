@@ -2,7 +2,7 @@
     <v-main class="list">
         <h3 class="text-h3" font-weight-medium mb-5> Customer </h3>
 
-        <v-card>
+        <v-card dark class="mt-5">
             <v-card-title>
                 <v-text-field
                     v-model="search"
@@ -15,7 +15,7 @@
                 <v-spacer></v-spacer>
 
             </v-card-title>
-            <v-data-table :headers="headers" :items="customers" :search="search">
+            <v-data-table dark :headers="headers" :items="customers" :search="search">
             </v-data-table>
         </v-card>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom>{{ error_message }}</v-snackbar>
